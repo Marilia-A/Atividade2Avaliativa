@@ -22,4 +22,7 @@ public class Nota {
     }
     public Nota() {
     }
+      public boolean validarNota() {
+        return nota >= 0.0 && nota <= 10.0;
+    }
 }

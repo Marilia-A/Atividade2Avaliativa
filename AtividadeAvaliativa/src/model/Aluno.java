@@ -33,5 +33,19 @@ public class Aluno extends Pessoa {
         this.nomePai = nomePai;
         this.nomeMae = nomeMae;
     }
+     public boolean validarMatricula() {
+        if (matricula == null) {
+            return false;
+        }
+        if (matricula.length() != 10) {
+            return false;
+        }
+        for (char c : matricula.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
     
 }

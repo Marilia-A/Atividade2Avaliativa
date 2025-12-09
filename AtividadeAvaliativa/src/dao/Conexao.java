@@ -1,4 +1,5 @@
 package dao;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ public class Conexao {
     private static final String USER = "postgres";
     private static final String PASSWORD = "ma12012006";
 
-    public static Connection connect() {
+    public static Connection getConnection() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -20,13 +21,11 @@ public class Conexao {
     }
 
     public static void main(String[] args) {
-        Connection conn = connect();
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                System.out.println("Erro ao fechar conexão: " + e.getMessage());
-            }
+        try (Connection con = Conexao.getConnection()) {
+            System.out.println("Conexão estabelecida com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao conectar: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

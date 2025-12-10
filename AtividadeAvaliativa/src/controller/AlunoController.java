@@ -15,7 +15,7 @@ public class AlunoController {
     private boolean validarDadosAluno(Aluno aluno) {
         if (aluno == null) {
             System.out.println("AlunoController - validarDadosAluno: aluno nulo");
-            return false;
+            return false; 
         }
 
         // ID obrigatório (pelo padrão do sistema)

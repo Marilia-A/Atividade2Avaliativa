@@ -1,7 +1,9 @@
 package view;
 
+import dao.TurmaDAO;
 import java.awt.*;
 import javax.swing.*;
+import model.Turma;
 
 public class FormCadastroTurma extends JFrame {
 
@@ -69,13 +71,114 @@ public class FormCadastroTurma extends JFrame {
         setVisible(true);
     }
 
-    private void salvar() { }
-    private void pesquisar() { }
-    private void alterar() { }
-    private void excluir() { }
+    private void salvar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomeTurma.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome da Turma!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Turma turma = new Turma();
+        turma.setId(Integer.parseInt(idTexto));
+        turma.setNomeTurma(nome);
+
+        TurmaDAO dao = new TurmaDAO();
+        boolean ok = dao.salvar(turma);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Turma salva com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar turma.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void pesquisar() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID da turma!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        TurmaDAO dao = new TurmaDAO();
+        Turma turma = dao.pesquisarPorId(Integer.parseInt(idTexto));
+
+        if (turma != null) {
+            txtNomeTurma.setText(turma.getNomeTurma());
+        } else {
+            JOptionPane.showMessageDialog(this, "Turma não encontrada!");
+        }
+    }
+
+    private void alterar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomeTurma.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome da Turma!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Turma turma = new Turma();
+        turma.setId(Integer.parseInt(idTexto));
+        turma.setNomeTurma(nome);
+
+        TurmaDAO dao = new TurmaDAO();
+        boolean ok = dao.alterar(turma);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Turma alterada com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao alterar turma.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void excluir() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID da turma!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        TurmaDAO dao = new TurmaDAO();
+        boolean ok = dao.excluir(Integer.parseInt(idTexto));
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Turma excluída com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "ID não encontrado ou erro ao excluir.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void limpar() {
         txtId.setText("");
         txtNomeTurma.setText("");
+        txtId.requestFocus();
     }
 }

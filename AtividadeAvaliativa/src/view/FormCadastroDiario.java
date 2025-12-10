@@ -1,7 +1,9 @@
 package view;
 
+import dao.DiarioDAO;
 import java.awt.*;
 import javax.swing.*;
+import model.Diario;
 
 public class FormCadastroDiario extends JFrame {
 
@@ -69,14 +71,115 @@ public class FormCadastroDiario extends JFrame {
         setVisible(true);
     }
 
-    private void salvar() { }
-    private void pesquisar() { }
-    private void alterar() { }
-    private void excluir() { }
+    private void salvar() {
+        String idTexto = txtId.getText().trim();
+        boolean status = chkAtivo.isSelected();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha o ID do Diário!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Diario diario = new Diario();
+        diario.setId(Integer.parseInt(idTexto));
+        diario.setStatus(status);
+
+        DiarioDAO dao = new DiarioDAO();
+        boolean ok = dao.salvar(diario);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Diário salvo com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar diário.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void pesquisar() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID do Diário!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DiarioDAO dao = new DiarioDAO();
+        Diario diario = dao.pesquisarPorId(Integer.parseInt(idTexto));
+
+        if (diario != null) {
+            chkAtivo.setSelected(diario.isStatus());
+        } else {
+            JOptionPane.showMessageDialog(this, "Diário não encontrado!");
+        }
+    }
+
+    private void alterar() {
+        String idTexto = txtId.getText().trim();
+        boolean status = chkAtivo.isSelected();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha o ID do Diário!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Diario diario = new Diario();
+        diario.setId(Integer.parseInt(idTexto));
+        diario.setStatus(status);
+
+        DiarioDAO dao = new DiarioDAO();
+        boolean ok = dao.alterar(diario);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Diário alterado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao alterar diário.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void excluir() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID do Diário!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DiarioDAO dao = new DiarioDAO();
+        boolean ok = dao.excluir(Integer.parseInt(idTexto));
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Diário excluído com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "ID não encontrado ou erro ao excluir.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void limpar() {
         txtId.setText("");
         chkAtivo.setSelected(false);
+        txtId.requestFocus();
     }
 }
 

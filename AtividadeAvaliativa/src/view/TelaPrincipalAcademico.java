@@ -84,19 +84,16 @@ public class TelaPrincipalAcademico extends JFrame {
         gbc.gridy = 1;
         painelBoasVindas.add(lblSubtitulo, gbc);
 
-        // Painel para as duas linhas de botões
         JPanel painelBotoes = new JPanel();
         painelBotoes.setBackground(new Color(240, 248, 255));
         painelBotoes.setLayout(new BoxLayout(painelBotoes, BoxLayout.Y_AXIS));
 
-        // linha de botões azuis
         JPanel linhaAzul = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         linhaAzul.setBackground(new Color(240, 248, 255));
         linhaAzul.add(criarBotaoAzul("Aluno", e -> abrirFormularioAluno()));
         linhaAzul.add(criarBotaoAzul("Professor", e -> abrirFormularioProfessor()));
         linhaAzul.add(criarBotaoAzul("Disciplina", e -> abrirFormularioDisciplina()));
 
-        // linha de botões verdes
         JPanel linhaVerde = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         linhaVerde.setBackground(new Color(240, 248, 255));
         linhaVerde.add(criarBotaoVerde("Turma", e -> abrirFormularioTurma()));
@@ -106,10 +103,6 @@ public class TelaPrincipalAcademico extends JFrame {
 
         painelBotoes.add(linhaAzul);
         painelBotoes.add(linhaVerde);
-
-        gbc.gridy = 2;
-        gbc.insets = new Insets(40, 20, 20, 20);
-        painelBoasVindas.add(painelBotoes, gbc);
 
         gbc.gridy = 2;
         gbc.insets = new Insets(40, 20, 20, 20);
@@ -134,7 +127,7 @@ public class TelaPrincipalAcademico extends JFrame {
         JButton btn = new JButton(texto);
         btn.setPreferredSize(new Dimension(150, 40));
         btn.setFont(new Font("Arial", Font.BOLD, 12));
-        btn.setBackground(new Color(70, 130, 180)); // azul
+        btn.setBackground(new Color(70, 130, 180));
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.addActionListener(acao);
@@ -145,7 +138,7 @@ public class TelaPrincipalAcademico extends JFrame {
         JButton btn = new JButton(texto);
         btn.setPreferredSize(new Dimension(150, 40));
         btn.setFont(new Font("Arial", Font.BOLD, 12));
-        btn.setBackground(new Color(60, 179, 113)); // verde
+        btn.setBackground(new Color(60, 179, 113));
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.addActionListener(acao);
@@ -153,31 +146,31 @@ public class TelaPrincipalAcademico extends JFrame {
     }
 
     private void abrirFormularioAluno() {
-        SwingUtilities.invokeLater(() -> new FormCadastroAluno());
+        new FormCadastroAluno();
     }
 
     private void abrirFormularioProfessor() {
-        SwingUtilities.invokeLater(() -> new FormCadastroProfessor());
+        new FormCadastroProfessor();
     }
 
     private void abrirFormularioDisciplina() {
-        SwingUtilities.invokeLater(() -> new FormCadastroDisciplina());
+        new FormCadastroDisciplina();
     }
 
     private void abrirFormularioTurma() {
-        SwingUtilities.invokeLater(() -> new FormCadastroTurma());
+        new FormCadastroTurma();
     }
 
     private void abrirFormularioPeriodo() {
-        SwingUtilities.invokeLater(() -> new FormCadastroPeriodo());
+        new FormCadastroPeriodo();
     }
 
     private void abrirFormularioDiario() {
-        SwingUtilities.invokeLater(() -> new FormCadastroDiario());
+        new FormCadastroDiario();
     }
 
     private void abrirFormularioNota() {
-        SwingUtilities.invokeLater(() -> new FormCadastroNota());
+        new FormCadastroNota();
     }
 
     private void mostrarSobre() {

@@ -1,7 +1,9 @@
 package view;
 
+import dao.DisciplinaDAO;
 import java.awt.*;
 import javax.swing.*;
+import model.Disciplina;
 
 public class FormCadastroDisciplina extends JFrame {
 
@@ -69,13 +71,114 @@ public class FormCadastroDisciplina extends JFrame {
         setVisible(true);
     }
 
-    private void salvar() { }
-    private void pesquisar() { }
-    private void alterar() { }
-    private void excluir() { }
+    private void salvar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomeDisciplina.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome da Disciplina!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Disciplina disc = new Disciplina();
+        disc.setId(Integer.parseInt(idTexto));
+        disc.setNomeDisciplina(nome);
+
+        DisciplinaDAO dao = new DisciplinaDAO();
+        boolean ok = dao.salvar(disc);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Disciplina salva com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar disciplina.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void pesquisar() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID da disciplina!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DisciplinaDAO dao = new DisciplinaDAO();
+        Disciplina disc = dao.pesquisarPorId(Integer.parseInt(idTexto));
+
+        if (disc != null) {
+            txtNomeDisciplina.setText(disc.getNomeDisciplina());
+        } else {
+            JOptionPane.showMessageDialog(this, "Disciplina não encontrada!");
+        }
+    }
+
+    private void alterar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomeDisciplina.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome da Disciplina!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Disciplina disc = new Disciplina();
+        disc.setId(Integer.parseInt(idTexto));
+        disc.setNomeDisciplina(nome);
+
+        DisciplinaDAO dao = new DisciplinaDAO();
+        boolean ok = dao.alterar(disc);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Disciplina alterada com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao alterar disciplina.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void excluir() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID da disciplina!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DisciplinaDAO dao = new DisciplinaDAO();
+        boolean ok = dao.excluir(Integer.parseInt(idTexto));
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Disciplina excluída com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "ID não encontrado ou erro ao excluir.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void limpar() {
         txtId.setText("");
         txtNomeDisciplina.setText("");
+        txtId.requestFocus();
     }
 }

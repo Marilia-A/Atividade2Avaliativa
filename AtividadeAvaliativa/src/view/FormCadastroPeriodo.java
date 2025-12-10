@@ -1,7 +1,9 @@
 package view;
 
+import dao.PeriodoDAO;
 import java.awt.*;
 import javax.swing.*;
+import model.Periodo;
 
 public class FormCadastroPeriodo extends JFrame {
 
@@ -69,13 +71,114 @@ public class FormCadastroPeriodo extends JFrame {
         setVisible(true);
     }
 
-    private void salvar() { }
-    private void pesquisar() { }
-    private void alterar() { }
-    private void excluir() { }
+    private void salvar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomePeriodo.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome do Período!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Periodo periodo = new Periodo();
+        periodo.setId(Integer.parseInt(idTexto));
+        periodo.setNomePeriodo(nome);
+
+        PeriodoDAO dao = new PeriodoDAO();
+        boolean ok = dao.salvar(periodo);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Período salvo com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar período.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void pesquisar() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID do período!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        PeriodoDAO dao = new PeriodoDAO();
+        Periodo periodo = dao.pesquisarPorId(Integer.parseInt(idTexto));
+
+        if (periodo != null) {
+            txtNomePeriodo.setText(periodo.getNomePeriodo());
+        } else {
+            JOptionPane.showMessageDialog(this, "Período não encontrado!");
+        }
+    }
+
+    private void alterar() {
+        String idTexto = txtId.getText().trim();
+        String nome    = txtNomePeriodo.getText().trim();
+
+        if (idTexto.isEmpty() || nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Preencha ID e Nome do Período!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Periodo periodo = new Periodo();
+        periodo.setId(Integer.parseInt(idTexto));
+        periodo.setNomePeriodo(nome);
+
+        PeriodoDAO dao = new PeriodoDAO();
+        boolean ok = dao.alterar(periodo);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Período alterado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao alterar período.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void excluir() {
+        String idTexto = txtId.getText().trim();
+
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Informe o ID do período!",
+                    "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        PeriodoDAO dao = new PeriodoDAO();
+        boolean ok = dao.excluir(Integer.parseInt(idTexto));
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Período excluído com sucesso!");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "ID não encontrado ou erro ao excluir.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void limpar() {
         txtId.setText("");
         txtNomePeriodo.setText("");
+        txtId.requestFocus();
     }
 }

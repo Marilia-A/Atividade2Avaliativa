@@ -25,7 +25,7 @@ public class Conexao {
             System.out.println("Conexão estabelecida com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro ao conectar: " + e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace();  // n entendi pra que serv mas precisa pq sem isso n funciona
         }
     }
 }

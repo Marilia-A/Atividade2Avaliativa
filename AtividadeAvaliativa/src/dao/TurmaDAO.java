@@ -89,7 +89,6 @@ public class TurmaDAO {
         return null;
     }
 
-    // NOVO: usado para preencher combo de turmas
     public List<Turma> listarTodos() {
         List<Turma> lista = new ArrayList<>();
 

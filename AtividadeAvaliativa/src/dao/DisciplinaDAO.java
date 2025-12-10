@@ -89,7 +89,7 @@ public class DisciplinaDAO {
         return null;
     }
 
-    // NOVO: usado para preencher combo de disciplinas
+    // esse listar é pra preencher os combos que pedem disciplina e os outros seguem a mesma coisa
     public List<Disciplina> listarTodos() {
         List<Disciplina> lista = new ArrayList<>();
 

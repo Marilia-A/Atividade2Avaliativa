@@ -14,7 +14,7 @@ public class NotaController {
         this.diario = new Diario();
     }
 
-    // 1) Valida regras básicas da nota (0–10 e ID válido)
+    // básico de validar notas
     private boolean validarDadosNota(Nota nota) {
         if (nota == null) {
             System.out.println("NotaController - validarDadosNota: nota nula");
@@ -26,7 +26,7 @@ public class NotaController {
             return false;
         }
 
-        // Regra 3: nota somente entre 0 e 10 (usa validarNota() da model)
+        // nota somente entre 0 e 10
         if (!nota.validarNota()) {
             System.out.println("NotaController - validarDadosNota: valor da nota fora do intervalo 0–10");
             return false;
@@ -35,7 +35,7 @@ public class NotaController {
         return true;
     }
 
-    // 2) Regra 1: garantir que aluno, disciplina, turma e período estejam preenchidos
+    // garante que aluno, disciplina, turma e período estejam preenchidos
     private boolean validarRelacoes(int idAluno, int idDisciplina, int idTurma, int idPeriodo) {
         if (idAluno <= 0) {
             System.out.println("NotaController - validarRelacoes: aluno não informado");
@@ -56,7 +56,7 @@ public class NotaController {
         return true;
     }
 
-    // 3) Salvar nota aplicando regras de negócio
+    // salva as notas conforme regasr de negocio
     public boolean salvarNota(Nota nota, int idAluno, int idDisciplina, int idTurma, int idPeriodo) {
         System.out.println("NotaController - salvarNota: iniciando");
 
@@ -70,7 +70,7 @@ public class NotaController {
             return false;
         }
 
-        boolean resultado = notaDAO.salvar(nota); // aqui seu DAO ainda só recebe Nota
+        boolean resultado = notaDAO.salvar(nota); 
 
         if (resultado) {
             System.out.println("NotaController - salvarNota: nota salva com sucesso");
@@ -81,7 +81,7 @@ public class NotaController {
         return resultado;
     }
 
-    // 4) Alterar nota aplicando as mesmas regras
+    // Alterar nota
     public boolean alterarNota(Nota nota, int idAluno, int idDisciplina, int idTurma, int idPeriodo) {
         System.out.println("NotaController - alterarNota: iniciando");
 
@@ -95,7 +95,7 @@ public class NotaController {
             return false;
         }
 
-        boolean resultado = notaDAO.alterar(nota); // idem: DAO com assinatura simples
+        boolean resultado = notaDAO.alterar(nota); // aqui so recebe nota
 
         if (resultado) {
             System.out.println("NotaController - alterarNota: nota alterada com sucesso");
@@ -106,7 +106,7 @@ public class NotaController {
         return resultado;
     }
 
-    // 5) Excluir nota
+    // Excluir nota
     public boolean excluirNota(int id) {
         System.out.println("NotaController - excluirNota: iniciando, id=" + id);
 
@@ -126,7 +126,7 @@ public class NotaController {
         return resultado;
     }
 
-    // 6) Pesquisar nota por ID
+    // Pesquisar nota por ID
     public Nota pesquisarNotaPorId(int id) {
         System.out.println("NotaController - pesquisarNotaPorId: iniciando, id=" + id);
 
@@ -146,7 +146,7 @@ public class NotaController {
         return nota;
     }
 
-    // 7) Regra 2: calcular média e verificar aprovação usando Diario
+    // Regra 2: calcular média e verificar aprovação usando Diario
     public double calcularMedia(double[] notas) {
         double media = diario.calcularMedia(notas);
         System.out.println("NotaController - calcularMedia: média calculada = " + media);

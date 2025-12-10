@@ -11,7 +11,7 @@ public class AlunoController {
         this.alunoDAO = new AlunoDAO();
     }
 
-    // Regra de negócio principal: validar matrícula (10 dígitos numéricos)
+    // Regra de negócio 
     private boolean validarDadosAluno(Aluno aluno) {
         if (aluno == null) {
             System.out.println("AlunoController - validarDadosAluno: aluno nulo");
@@ -31,7 +31,7 @@ public class AlunoController {
         }
 
         // Matrícula obrigatória + regra dos 10 dígitos numéricos
-        if (!aluno.validarMatricula()) { // usa a regra já implementada na model
+        if (!aluno.validarMatricula()) { //puxa o treco da regra da model
             System.out.println("AlunoController - validarDadosAluno: matrícula inválida");
             return false;
         }

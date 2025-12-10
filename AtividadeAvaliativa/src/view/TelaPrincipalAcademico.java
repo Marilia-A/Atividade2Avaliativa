@@ -40,16 +40,12 @@ public class TelaPrincipalAcademico extends JFrame {
         JMenuItem menuItemDiario = new JMenuItem("Diário");
         menuItemDiario.addActionListener(e -> abrirFormularioDiario());
 
-        JMenuItem menuItemNota = new JMenuItem("Nota");
-        menuItemNota.addActionListener(e -> abrirFormularioNota());
-
         menuCadastros.add(menuItemAluno);
         menuCadastros.add(menuItemProfessor);
         menuCadastros.add(menuItemDisciplina);
         menuCadastros.add(menuItemTurma);
         menuCadastros.add(menuItemPeriodo);
         menuCadastros.add(menuItemDiario);
-        menuCadastros.add(menuItemNota);
 
         JMenu menuAjuda = new JMenu("Ajuda");
         JMenuItem menuItemSobre = new JMenuItem("Sobre");
@@ -99,7 +95,6 @@ public class TelaPrincipalAcademico extends JFrame {
         linhaVerde.add(criarBotaoVerde("Turma", e -> abrirFormularioTurma()));
         linhaVerde.add(criarBotaoVerde("Período", e -> abrirFormularioPeriodo()));
         linhaVerde.add(criarBotaoVerde("Diário", e -> abrirFormularioDiario()));
-        linhaVerde.add(criarBotaoVerde("Nota", e -> abrirFormularioNota()));
 
         painelBotoes.add(linhaAzul);
         painelBotoes.add(linhaVerde);
@@ -167,10 +162,6 @@ public class TelaPrincipalAcademico extends JFrame {
 
     private void abrirFormularioDiario() {
         new FormCadastroDiario();
-    }
-
-    private void abrirFormularioNota() {
-        new FormCadastroNota();
     }
 
     private void mostrarSobre() {

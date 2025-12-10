@@ -1,8 +1,16 @@
 package model;
+
 public class Diario {
     private int id;
     private boolean status;
-    //get e set
+
+    // novos campos de relacionamento
+    private int idAluno;
+    private int idDisciplina;
+    private int idTurma;
+    private int idPeriodo;
+
+    // get e set
     public int getId() {
         return id;
     }
@@ -15,14 +23,56 @@ public class Diario {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    //construtores
+
+    public int getIdAluno() {
+        return idAluno;
+    }
+    public void setIdAluno(int idAluno) {
+        this.idAluno = idAluno;
+    }
+
+    public int getIdDisciplina() {
+        return idDisciplina;
+    }
+    public void setIdDisciplina(int idDisciplina) {
+        this.idDisciplina = idDisciplina;
+    }
+
+    public int getIdTurma() {
+        return idTurma;
+    }
+    public void setIdTurma(int idTurma) {
+        this.idTurma = idTurma;
+    }
+
+    public int getIdPeriodo() {
+        return idPeriodo;
+    }
+    public void setIdPeriodo(int idPeriodo) {
+        this.idPeriodo = idPeriodo;
+    }
+
+    // construtores
+    public Diario(int id, boolean status, int idAluno,
+                  int idDisciplina, int idTurma, int idPeriodo) {
+        this.id = id;
+        this.status = status;
+        this.idAluno = idAluno;
+        this.idDisciplina = idDisciplina;
+        this.idTurma = idTurma;
+        this.idPeriodo = idPeriodo;
+    }
+
     public Diario(int id, boolean status) {
         this.id = id;
         this.status = status;
     }
+
     public Diario() {
     }
- public double calcularMedia(double[] notas) {
+
+    // regra de média
+    public double calcularMedia(double[] notas) {
         if (notas == null || notas.length == 0) {
             return 0.0;
         }

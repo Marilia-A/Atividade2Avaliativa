@@ -89,7 +89,6 @@ public class PeriodoDAO {
         return null;
     }
 
-    // NOVO: usado para preencher combo de períodos
     public List<Periodo> listarTodos() {
         List<Periodo> lista = new ArrayList<>();
 

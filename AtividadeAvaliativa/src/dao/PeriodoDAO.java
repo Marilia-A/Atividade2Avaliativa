@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Periodo;
 
 public class PeriodoDAO {
@@ -17,7 +19,9 @@ public class PeriodoDAO {
             stmt.setInt(1, periodo.getId());
             stmt.setString(2, periodo.getNomePeriodo());
 
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("PeriodoDAO - salvar: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao salvar período: " + e.getMessage());
@@ -34,7 +38,9 @@ public class PeriodoDAO {
             stmt.setString(1, periodo.getNomePeriodo());
             stmt.setInt(2, periodo.getId());
 
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("PeriodoDAO - alterar: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao alterar período: " + e.getMessage());
@@ -49,7 +55,9 @@ public class PeriodoDAO {
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("PeriodoDAO - excluir: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao excluir período: " + e.getMessage());
@@ -70,12 +78,40 @@ public class PeriodoDAO {
                 Periodo p = new Periodo();
                 p.setId(rs.getInt("id"));
                 p.setNomePeriodo(rs.getString("nome_periodo"));
+                System.out.println("PeriodoDAO - pesquisarPorId: encontrado");
                 return p;
             }
 
         } catch (SQLException e) {
             System.out.println("Erro ao pesquisar período: " + e.getMessage());
         }
+        System.out.println("PeriodoDAO - pesquisarPorId: não encontrado");
         return null;
+    }
+
+    // NOVO: usado para preencher combo de períodos
+    public List<Periodo> listarTodos() {
+        List<Periodo> lista = new ArrayList<>();
+
+        String sql = "SELECT id, nome_periodo FROM periodo";
+
+        try (Connection con = Conexao.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Periodo p = new Periodo();
+                p.setId(rs.getInt("id"));
+                p.setNomePeriodo(rs.getString("nome_periodo"));
+                lista.add(p);
+            }
+
+            System.out.println("PeriodoDAO - listarTodos: " + lista.size() + " registros");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar períodos: " + e.getMessage());
+        }
+
+        return lista;
     }
 }

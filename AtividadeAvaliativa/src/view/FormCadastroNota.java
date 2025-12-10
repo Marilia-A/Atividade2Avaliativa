@@ -1,9 +1,20 @@
 package view;
 
 import dao.NotaDAO;
+import dao.AlunoDAO;
+import dao.DisciplinaDAO;
+import dao.TurmaDAO;
+import dao.PeriodoDAO;
+
+import model.Nota;
+import model.Aluno;
+import model.Disciplina;
+import model.Turma;
+import model.Periodo;
+
 import java.awt.*;
 import javax.swing.*;
-import model.Nota;
+import java.util.List;
 
 public class FormCadastroNota extends JFrame {
 
@@ -93,8 +104,7 @@ public class FormCadastroNota extends JFrame {
         gbc.gridx = 0; gbc.gridy = 6;
         add(painelBotoes, gbc);
 
-        // depois você chama carregarAlunos(), carregarDisciplinas(), etc.
-
+        // eventos
         btnSalvar.addActionListener(e -> salvar());
         btnPesquisar.addActionListener(e -> pesquisar());
         btnAlterar.addActionListener(e -> alterar());
@@ -102,7 +112,53 @@ public class FormCadastroNota extends JFrame {
         btnLimpar.addActionListener(e -> limpar());
         btnSair.addActionListener(e -> dispose());
 
+        // carregar combos
+        carregarAlunos();
+        carregarDisciplinas();
+        carregarTurmas();
+        carregarPeriodos();
+
         setVisible(true);
+    }
+
+    private void carregarAlunos() {
+        cmbAluno.removeAllItems();
+        AlunoDAO dao = new AlunoDAO();
+        List<Aluno> lista = dao.listarTodos(); // implemente no DAO
+        for (Aluno a : lista) {
+            cmbAluno.addItem(a.getId() + " - " + a.getNome());
+        }
+        cmbAluno.setSelectedIndex(-1);
+    }
+
+    private void carregarDisciplinas() {
+        cmbDisciplina.removeAllItems();
+        DisciplinaDAO dao = new DisciplinaDAO();
+        List<Disciplina> lista = dao.listarTodos();
+        for (Disciplina d : lista) {
+            cmbDisciplina.addItem(d.getId() + " - " + d.getNomeDisciplina());
+        }
+        cmbDisciplina.setSelectedIndex(-1);
+    }
+
+    private void carregarTurmas() {
+        cmbTurma.removeAllItems();
+        TurmaDAO dao = new TurmaDAO();
+        List<Turma> lista = dao.listarTodos();
+        for (Turma t : lista) {
+            cmbTurma.addItem(t.getId() + " - " + t.getNomeTurma());
+        }
+        cmbTurma.setSelectedIndex(-1);
+    }
+
+    private void carregarPeriodos() {
+        cmbPeriodo.removeAllItems();
+        PeriodoDAO dao = new PeriodoDAO();
+        List<Periodo> lista = dao.listarTodos();
+        for (Periodo p : lista) {
+            cmbPeriodo.addItem(p.getId() + " - " + p.getNomePeriodo());
+        }
+        cmbPeriodo.setSelectedIndex(-1);
     }
 
     private void salvar() {
@@ -110,10 +166,10 @@ public class FormCadastroNota extends JFrame {
         String notaTexto = txtNota.getText().trim();
 
         if (idTexto.isEmpty() || notaTexto.isEmpty()
-                || cmbAluno.getSelectedIndex()     == -1
+                || cmbAluno.getSelectedIndex()      == -1
                 || cmbDisciplina.getSelectedIndex() == -1
-                || cmbTurma.getSelectedIndex()     == -1
-                || cmbPeriodo.getSelectedIndex()   == -1) {
+                || cmbTurma.getSelectedIndex()      == -1
+                || cmbPeriodo.getSelectedIndex()    == -1) {
 
             JOptionPane.showMessageDialog(this,
                     "Preencha ID, Nota, Aluno, Disciplina, Turma e Período!",
@@ -137,7 +193,6 @@ public class FormCadastroNota extends JFrame {
         nota.setId(Integer.parseInt(idTexto));
         nota.setNota(valorNota);
 
-        // regra: 0–10 pela model
         if (!nota.validarNota()) {
             JOptionPane.showMessageDialog(this,
                     "A nota deve estar entre 0 e 10.",
@@ -147,7 +202,7 @@ public class FormCadastroNota extends JFrame {
         }
 
         NotaDAO dao = new NotaDAO();
-        boolean ok = dao.salvar(nota); // assinatura do seu DAO
+        boolean ok = dao.salvar(nota);
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "Nota salva com sucesso!");
@@ -176,7 +231,7 @@ public class FormCadastroNota extends JFrame {
 
         if (nota != null) {
             txtNota.setText(String.valueOf(nota.getNota()));
-            // combos podem ser ajustados depois quando o DAO/controlador devolver IDs
+            // aqui poderia, no futuro, posicionar as combos conforme os IDs relacionados
         } else {
             JOptionPane.showMessageDialog(this, "Nota não encontrada!");
         }
@@ -187,10 +242,10 @@ public class FormCadastroNota extends JFrame {
         String notaTexto = txtNota.getText().trim();
 
         if (idTexto.isEmpty() || notaTexto.isEmpty()
-                || cmbAluno.getSelectedIndex()     == -1
+                || cmbAluno.getSelectedIndex()      == -1
                 || cmbDisciplina.getSelectedIndex() == -1
-                || cmbTurma.getSelectedIndex()     == -1
-                || cmbPeriodo.getSelectedIndex()   == -1) {
+                || cmbTurma.getSelectedIndex()      == -1
+                || cmbPeriodo.getSelectedIndex()    == -1) {
 
             JOptionPane.showMessageDialog(this,
                     "Preencha ID, Nota, Aluno, Disciplina, Turma e Período!",
@@ -223,7 +278,7 @@ public class FormCadastroNota extends JFrame {
         }
 
         NotaDAO dao = new NotaDAO();
-        boolean ok = dao.alterar(nota); // assinatura do seu DAO
+        boolean ok = dao.alterar(nota);
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "Nota alterada com sucesso!");

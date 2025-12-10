@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Aluno;
 
 public class AlunoDAO {
@@ -24,7 +26,9 @@ public class AlunoDAO {
             stmt.setString(7, aluno.getNomePai());
             stmt.setString(8, aluno.getNomeMae());
 
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("AlunoDAO - salvar: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao salvar aluno: " + e.getMessage());
@@ -48,7 +52,9 @@ public class AlunoDAO {
             stmt.setString(7, aluno.getNomeMae());
             stmt.setInt(8, aluno.getId());
 
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("AlunoDAO - alterar: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao alterar aluno: " + e.getMessage());
@@ -63,7 +69,9 @@ public class AlunoDAO {
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            return stmt.executeUpdate() > 0;
+            boolean ok = stmt.executeUpdate() > 0;
+            System.out.println("AlunoDAO - excluir: " + ok);
+            return ok;
 
         } catch (SQLException e) {
             System.out.println("Erro ao excluir aluno: " + e.getMessage());
@@ -91,12 +99,46 @@ public class AlunoDAO {
                 aluno.setEmail(rs.getString("email"));
                 aluno.setNomePai(rs.getString("nome_pai"));
                 aluno.setNomeMae(rs.getString("nome_mae"));
+                System.out.println("AlunoDAO - pesquisarPorId: encontrado");
                 return aluno;
             }
 
         } catch (SQLException e) {
             System.out.println("Erro ao pesquisar aluno: " + e.getMessage());
         }
+        System.out.println("AlunoDAO - pesquisarPorId: não encontrado");
         return null;
+    }
+
+
+    public List<Aluno> listarTodos() {
+        List<Aluno> lista = new ArrayList<>();
+
+        String sql = "SELECT id, matricula, nome, endereco, telefone, email, nome_pai, nome_mae FROM aluno";
+
+        try (Connection con = Conexao.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Aluno aluno = new Aluno();
+                aluno.setId(rs.getInt("id"));
+                aluno.setMatricula(rs.getString("matricula"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setEndereco(rs.getString("endereco"));
+                aluno.setTelefone(rs.getString("telefone"));
+                aluno.setEmail(rs.getString("email"));
+                aluno.setNomePai(rs.getString("nome_pai"));
+                aluno.setNomeMae(rs.getString("nome_mae"));
+                lista.add(aluno);
+            }
+
+            System.out.println("AlunoDAO - listarTodos: " + lista.size() + " registros");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar alunos: " + e.getMessage());
+        }
+
+        return lista;
     }
 }

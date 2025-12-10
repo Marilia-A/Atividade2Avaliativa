@@ -4,46 +4,47 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Nota;
 
-public class NotaDAO {
+import model.Turma;
 
-    public boolean salvar(Nota nota) {
-        String sql = "INSERT INTO nota (id, valor) VALUES (?, ?)";
+public class TurmaDAO {
+
+    public boolean salvar(Turma turma) {
+        String sql = "INSERT INTO turma (id, nome_turma) VALUES (?, ?)";
 
         try (Connection con = Conexao.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, nota.getId());
-            stmt.setDouble(2, nota.getNota());
+            stmt.setInt(1, turma.getId());
+            stmt.setString(2, turma.getNomeTurma());
 
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erro ao salvar nota: " + e.getMessage());
+            System.out.println("Erro ao salvar turma: " + e.getMessage());
             return false;
         }
     }
 
-    public boolean alterar(Nota nota) {
-        String sql = "UPDATE nota SET valor = ? WHERE id = ?";
+    public boolean alterar(Turma turma) {
+        String sql = "UPDATE turma SET nome_turma = ? WHERE id = ?";
 
         try (Connection con = Conexao.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setDouble(1, nota.getNota());
-            stmt.setInt(2, nota.getId());
+            stmt.setString(1, turma.getNomeTurma());
+            stmt.setInt(2, turma.getId());
 
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erro ao alterar nota: " + e.getMessage());
+            System.out.println("Erro ao alterar turma: " + e.getMessage());
             return false;
         }
     }
 
     public boolean excluir(int id) {
-        String sql = "DELETE FROM nota WHERE id = ?";
+        String sql = "DELETE FROM turma WHERE id = ?";
 
         try (Connection con = Conexao.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -52,13 +53,13 @@ public class NotaDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erro ao excluir nota: " + e.getMessage());
+            System.out.println("Erro ao excluir turma: " + e.getMessage());
             return false;
         }
     }
 
-    public Nota pesquisarPorId(int id) {
-        String sql = "SELECT id, valor FROM nota WHERE id = ?";
+    public Turma pesquisarPorId(int id) {
+        String sql = "SELECT id, nome_turma FROM turma WHERE id = ?";
 
         try (Connection con = Conexao.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -67,14 +68,14 @@ public class NotaDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Nota n = new Nota();
-                n.setId(rs.getInt("id"));
-                n.setNota(rs.getDouble("valor"));
-                return n;
+                Turma t = new Turma();
+                t.setId(rs.getInt("id"));
+                t.setNomeTurma(rs.getString("nome_turma"));
+                return t;
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro ao pesquisar nota: " + e.getMessage());
+            System.out.println("Erro ao pesquisar turma: " + e.getMessage());
         }
         return null;
     }

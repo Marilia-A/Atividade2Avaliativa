@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -77,34 +78,41 @@ public class TelaPrincipalAcademico extends JFrame {
         gbc.gridy = 0;
         painelBoasVindas.add(lblTitulo, gbc);
 
-        JLabel lblSubtitulo = new JLabel("Use o menu ou os botões para acessar os cadastros");
+        JLabel lblSubtitulo = new JLabel("Bem Vindo!");
         lblSubtitulo.setFont(new Font("Arial", Font.PLAIN, 16));
         lblSubtitulo.setForeground(new Color(70, 70, 70));
         gbc.gridy = 1;
         painelBoasVindas.add(lblSubtitulo, gbc);
 
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        // Painel para as duas linhas de botões
+        JPanel painelBotoes = new JPanel();
         painelBotoes.setBackground(new Color(240, 248, 255));
+        painelBotoes.setLayout(new BoxLayout(painelBotoes, BoxLayout.Y_AXIS));
 
-        Color azulClaro = new Color(70, 130, 180);
+        // linha de botões azuis
+        JPanel linhaAzul = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        linhaAzul.setBackground(new Color(240, 248, 255));
+        linhaAzul.add(criarBotaoAzul("Aluno", e -> abrirFormularioAluno()));
+        linhaAzul.add(criarBotaoAzul("Professor", e -> abrirFormularioProfessor()));
+        linhaAzul.add(criarBotaoAzul("Disciplina", e -> abrirFormularioDisciplina()));
 
-        JButton btnAluno = criarBotaoAzul("Aluno", azulClaro, e -> abrirFormularioAluno());
-        JButton btnProfessor = criarBotaoAzul("Professor", azulClaro, e -> abrirFormularioProfessor());
-        JButton btnDisciplina = criarBotaoAzul("Disciplina", azulClaro, e -> abrirFormularioDisciplina());
-        JButton btnTurma = criarBotaoAzul("Turma", azulClaro, e -> abrirFormularioTurma());
-        JButton btnPeriodo = criarBotaoAzul("Período", azulClaro, e -> abrirFormularioPeriodo());
-        JButton btnDiario = criarBotaoAzul("Diário", azulClaro, e -> abrirFormularioDiario());
-        JButton btnNota = criarBotaoAzul("Nota", azulClaro, e -> abrirFormularioNota());
+        // linha de botões verdes
+        JPanel linhaVerde = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        linhaVerde.setBackground(new Color(240, 248, 255));
+        linhaVerde.add(criarBotaoVerde("Turma", e -> abrirFormularioTurma()));
+        linhaVerde.add(criarBotaoVerde("Período", e -> abrirFormularioPeriodo()));
+        linhaVerde.add(criarBotaoVerde("Diário", e -> abrirFormularioDiario()));
+        linhaVerde.add(criarBotaoVerde("Nota", e -> abrirFormularioNota()));
 
-        painelBotoes.add(btnAluno);
-        painelBotoes.add(btnProfessor);
-        painelBotoes.add(btnDisciplina);
-        painelBotoes.add(btnTurma);
-        painelBotoes.add(btnPeriodo);
-        painelBotoes.add(btnDiario);
-        painelBotoes.add(btnNota);
+        painelBotoes.add(linhaAzul);
+        painelBotoes.add(linhaVerde);
 
         gbc.gridy = 2;
+        gbc.insets = new Insets(40, 20, 20, 20);
+        painelBoasVindas.add(painelBotoes, gbc);
+
+        gbc.gridy = 2;
+        gbc.insets = new Insets(40, 20, 20, 20);
         painelBoasVindas.add(painelBotoes, gbc);
 
         painelPrincipal.add(painelBoasVindas, BorderLayout.CENTER);
@@ -112,6 +120,7 @@ public class TelaPrincipalAcademico extends JFrame {
         JPanel painelStatus = new JPanel(new FlowLayout(FlowLayout.LEFT));
         painelStatus.setBackground(new Color(220, 220, 220));
         painelStatus.setBorder(BorderFactory.createEtchedBorder());
+
         JLabel lblStatus = new JLabel("Sistema pronto para uso");
         lblStatus.setFont(new Font("Arial", Font.PLAIN, 11));
         painelStatus.add(lblStatus);
@@ -121,11 +130,22 @@ public class TelaPrincipalAcademico extends JFrame {
         add(painelPrincipal);
     }
 
-    private JButton criarBotaoAzul(String texto, Color cor, java.awt.event.ActionListener acao) {
+    private JButton criarBotaoAzul(String texto, java.awt.event.ActionListener acao) {
         JButton btn = new JButton(texto);
-        btn.setPreferredSize(new Dimension(160, 40));
+        btn.setPreferredSize(new Dimension(150, 40));
         btn.setFont(new Font("Arial", Font.BOLD, 12));
-        btn.setBackground(cor);
+        btn.setBackground(new Color(70, 130, 180)); // azul
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.addActionListener(acao);
+        return btn;
+    }
+
+    private JButton criarBotaoVerde(String texto, java.awt.event.ActionListener acao) {
+        JButton btn = new JButton(texto);
+        btn.setPreferredSize(new Dimension(150, 40));
+        btn.setFont(new Font("Arial", Font.BOLD, 12));
+        btn.setBackground(new Color(60, 179, 113)); // verde
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.addActionListener(acao);
